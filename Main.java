@@ -2,21 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String marca;
-        String modello;
-        String colore;
-        String targa;
-        int nPorte;
-        String carburante;
-        int velMax;
-        int capienza;
-        double consumo;
-        double kmTot;
-        int kmParx;
-        int capacitaSerb;
-        int livelloSerb;
         boolean accSpent = false;
-        int velAttuale;
 
         int scelta;
         String scelta2;
@@ -26,32 +12,37 @@ public class Main {
         Scanner tastiera = new Scanner(System.in);
 
         System.out.print("Inserisci marca auto: ");
-        marca = tastiera.nextLine();
+        String marca = tastiera.nextLine();
         System.out.print("Inserisci modello auto: ");
-        modello = tastiera.nextLine();
+        String modello = tastiera.nextLine();
         System.out.print("Inserisci colore auto: ");
-        colore = tastiera.nextLine();
+        String colore = tastiera.nextLine();
         System.out.print("Inserisci targa auto: ");
-        targa = tastiera.nextLine();
+        String targa = tastiera.nextLine();
         System.out.print("Inserisci n porte auto: ");
-        nPorte = Integer.parseInt(tastiera.nextLine());
+        int nPorte = Integer.parseInt(tastiera.nextLine());
         System.out.print("Inserisci capienza auto (persone): ");
-        capienza = Integer .parseInt(tastiera.nextLine());
+        int capienza = Integer .parseInt(tastiera.nextLine());
         System.out.print("Inserisci tipo carburante auto: ");
-        carburante = tastiera.nextLine();
+        String carburante = tastiera.nextLine();
         System.out.print("Inserisci velocità max auto: ");
-        velMax = Integer.parseInt(tastiera.nextLine());
+        int velMax = Integer.parseInt(tastiera.nextLine());
         System.out.print("Inserisci consumo auto (l/100km o kw/100km): ");
-        consumo = Double.parseDouble(tastiera.nextLine());
+        double consumo = Double.parseDouble(tastiera.nextLine());
         System.out.print("Inserisci km totali macchina: ");
-        kmTot = Double.parseDouble(tastiera.nextLine());
+        double kmTot = Double.parseDouble(tastiera.nextLine());
         System.out.print("Inserisci capacità serbatoio macchina: ");
-        capacitaSerb = Integer.parseInt(tastiera.nextLine());
+        int capacitaSerb = Integer.parseInt(tastiera.nextLine());
+        System.out.print("Inserisci livello serbatoio: ");
+        int livelloSerb = Integer.parseInt(tastiera.nextLine());
+        System.out.print("Inserisci di quanti km ti devi spostare: ");
+        double kmParx = Double.parseDouble(tastiera.nextLine());
+        System.out.print("Inserisci valocità media prevista: ");
+        int velMedia = Integer.parseInt(tastiera.nextLine());
 
+        Car macchina = new Car(marca, modello, colore, targa, nPorte, capienza, carburante, velMax, consumo, kmTot, capacitaSerb, accSpent, livelloSerb);
+        
         System.out.print("--------------------------------------------------");
-        System.out.println("");
-
-        Car macchina = new Car(marca, modello, colore, targa, nPorte, capienza, carburante, velMax, consumo, kmTot, capacitaSerb, accSpent);
         System.out.println("");
         System.out.print(macchina.toString());
         System.out.println("");
@@ -67,64 +58,59 @@ public class Main {
         }while(scelta != 1);
 
         macchina.accensioneSpegnimento(accSpent);
-
-        System.out.print("Inserisci livello serbatoio: ");
-        livelloSerb = Integer.parseInt(tastiera.nextLine());
-
-        System.out.print("Inserisci di quanti km ti devi spostare: ");
-        kmParx = Integer.parseInt(tastiera.nextLine());
-
-        System.out.print("Inserisci valocità attuale: ");
-        velAttuale = Integer.parseInt(tastiera.nextLine());
-            
-        if(velAttuale > velMax) {
-            System.err.println("ATTENZIONE! La macchina sta eccedendo la velocità massima");
-        }
         
-        if(macchina.muovi(kmParx, velAttuale) == true){
+        if(macchina.muovi(kmParx) == true){
 
             System.out.println("La macchina si sta muovendo..");
             System.out.println("Hai raggiunto la tua destinazione!");
-            System.out.println("Carburante rimasto: " + livelloSerb + "l");
-
-            //livelloSerb -= ((int)((kmParx/100)*consumo));
-            //kmTot += kmParx;
-
+            System.out.print(macchina.messaggioArrivo());
+            
         }else{
 
             do{
-                System.out.println("La macchina non ha abbastanza carburante per effettuare il viaggio desiderato. Vuoi fare rifornimento?");
+                System.out.print("La macchina non ha abbastanza carburante per effettuare il viaggio desiderato. Vuoi fare rifornimento? ");
                 scelta2 = tastiera.nextLine();
 
-                if (scelta2 == "si") {
+                if (scelta2.equals("si")) {
 
                     macchina.rifornimento();
+                    System.out.println("Rifornimento effettuato!");
+                    System.out.println("La macchina si sta muovendo..");
+                    System.out.println("Hai raggiunto la tua destinazione!");
+                    System.out.print(macchina.messaggioArrivo());
                     
+                } else if (scelta2.equals("no")){
 
-                } else if (scelta2 == "no"){
-
-                    System.out.println("Effettuare il viaggio lo stesso? ");
-                    System.out.println("...");
+                    System.out.print("Effettuare il viaggio lo stesso? ");
                     do{
                         scelta3 = tastiera.nextLine();
 
                         switch (scelta3) {
                             case "si":
                                 System.out.println("La macchina si è spenta per mancanza di carburante prima del raggiungimento della destinazione");
-                                System.out.println("Vuoi chiamare il carro attrezzi? ");
+                                System.out.print("Vuoi chiamare il carro attrezzi? ");
                                 
-                                do{
+                                do {
                                     scelta4 = tastiera.nextLine();
-                                    if (scelta4 == "si") {
+                                    if (scelta4.equals("si")) {
+
                                         macchina.chiamataCarroAttrezzi();
-                                    } else if (scelta4 == "no") {
+                                        System.out.println("La macchina si sta muovendo..");
+                                        System.out.println("Hai raggiunto la tua destinazione!");
+                                        System.out.print(macchina.messaggioArrivo());
+
+                                    } else if (scelta4.equals("no")) {
+
                                         System.out.println("La macchina è rimasta ferma in strada.");
+
                                     } else {
+
                                         System.err.println("Valore inserito non valido!");
+
                                     }
     
                                     
-                                }while(scelta4 != "si" && scelta4 != "no");
+                                } while (!scelta4.equals("si") && !scelta4.equals("no"));
                                 break;
                             
                             case "no":
@@ -135,18 +121,17 @@ public class Main {
                                 System.err.println("Valore inserito non valido!");
                                 break;
                         }
-                    }while(scelta3 != "si" && scelta3 != "no");
+                    }while(!scelta3.equals("si") && !scelta3.equals("no"));
 
                 } else {
 
                     System.err.println("Valore inserito non valido!");
 
                 }
-            }while(scelta2 == "si" || scelta2 == "no");
+            }while(!(scelta2.equals("si") || scelta2.equals("no")));
             
         }
         
-
         tastiera.close();
     }
 }

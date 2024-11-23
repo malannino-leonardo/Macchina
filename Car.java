@@ -9,15 +9,14 @@ public class Car {
     private int capienza;
     private double consumo;                 // l/100km o kw/100km
     private double kmTot;
-    private int kmParx;
     private int capacitaSerb;
     private int livelloSerb;
     private boolean accSpent;
-    private int velAttuale;
+    private int velMedia;
     private int range;      //km con litro
 
     //costruttore
-    public Car(String marca, String modello, String colore, String targa, int nPorte, int capienza, String Carburante, int velMax, double consumo, double kmTot, int capacitaSerb, boolean accSpent) {
+    public Car(String marca, String modello, String colore, String targa, int nPorte, int capienza, String Carburante, int velMax, double consumo, double kmTot, int capacitaSerb, boolean accSpent, int livelloSerb) {
         this.marca = marca;
         this.modello = modello;
         this.colore = colore;
@@ -30,6 +29,7 @@ public class Car {
         this.kmTot = kmTot;
         this.capacitaSerb = capacitaSerb;
         this.accSpent = false;
+        this.livelloSerb = livelloSerb;
     }
 
     public void accensioneSpegnimento(boolean accSpent) {
@@ -43,15 +43,21 @@ public class Car {
         }
     }
 
-    public boolean muovi(int kmParx, int velAttuale) {
+    public boolean muovi(double kmParx) {
         boolean movimento;
         
-        range = calcRange(capacitaSerb, kmParx, consumo);
+        range = calcRange(livelloSerb, consumo);
 
-        if(kmParx < range) {
+        if(kmParx <= range) {
             movimento = true;
+            this.livelloSerb -= ((consumo/100)*kmParx);
+            this.kmTot += kmParx;
         } else {
             movimento = false;
+        }
+
+        if(velMedia > velMax) {
+            System.err.println("ATTENZIONE! La macchina sta eccedendo la velocità massima");
         }
             
         return movimento;
@@ -61,7 +67,7 @@ public class Car {
         return livelloSerb = 100;
     }
 
-    public int calcRange(int capacitaSerb, int livelloSerb, double consumo) {
+    public int calcRange(int livelloSerb, double consumo) {
         int range;
 
         range = (int)((livelloSerb/consumo)*100);          //km con attuale livello Serb
@@ -70,12 +76,13 @@ public class Car {
     }
 
     public void incrementoDecremento() {
-        this.velAttuale = velAttuale;
+        this.velMedia = velMedia;
     }
 
     public void chiamataCarroAttrezzi() {
         System.out.println("Il carro attrezzi ti ha portato al distributore più vicino..");
         System.out.println("Rifornimento in corso..");
+        livelloSerb = rifornimento();
     }
 
     @Override
@@ -83,5 +90,10 @@ public class Car {
         return "Marca: " + marca + " Modello: " + modello + " Colore: " + colore + 
         "\nTarga: " + targa + " nPorte: " + nPorte + " Capienza: " + capienza + 
         " Carburante: " + Carburante + "\nVelocità max: " + velMax + " Km totali: " + kmTot;
+    }
+
+    public String messaggioArrivo() {
+        return "Carburante rimasto: " + livelloSerb + "l" +
+        "\nKm totali: " + kmTot;
     }
 }
