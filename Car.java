@@ -16,7 +16,7 @@ public class Car {
     private int range;      //km con litro
 
     //costruttore
-    public Car(String marca, String modello, String colore, String targa, int nPorte, int capienza, String Carburante, int velMax, double consumo, double kmTot, int capacitaSerb, boolean accSpent, int livelloSerb) {
+    public Car(String marca, String modello, String colore, String targa, int nPorte, String Carburante, int velMax, int capienza, double consumo, double kmTot, int capacitaSerb, int livelloSerb, boolean accSpent, int velMedia, int range) {
         this.marca = marca;
         this.modello = modello;
         this.colore = colore;
