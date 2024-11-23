@@ -1,0 +1,22 @@
+Automobile:
+- marca (s)
+- modello (s)
+- colore (s)
+- acceso/spento (bool)
+- targa(s)
+- capienza (int)
+- n porte (int)
+- carburante (s) [gas, benz, hyb , ele]
+- velocità (int)
+- velocita max (int)
+- consumo(int) [l/100km o kw/100km]
+- km tot (long int)
+- km parx (int)
+- capacità carb (int)
+- livello serb (int)
+
+metodi 
+
+- accensione/spegnimento()
+- muovi(km)
+- incremento /decremento vel()
