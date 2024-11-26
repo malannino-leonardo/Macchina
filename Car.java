@@ -64,7 +64,7 @@ public class Car {
     }
 
     public int rifornimento() {
-        return livelloSerb = 100;
+        return livelloSerb = capacitaSerb;
     }
 
     public int calcRange(int livelloSerb, double consumo) {
